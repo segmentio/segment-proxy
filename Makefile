@@ -4,4 +4,8 @@ build:
 test:
 	go test -v -cover
 
-.PHONY: build test
+docker:
+	docker build -t segment-proxy .
+	docker run --publish 6060:8080 --name segment-proxy --rm segment-proxy
+
+.PHONY: build test docker
