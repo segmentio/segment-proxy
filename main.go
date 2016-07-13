@@ -48,7 +48,7 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) *httputil.Revers
 			req.URL.RawQuery = targetQuery + "&" + req.URL.RawQuery
 		}
 
-		// patchHost sets the host of the request to the host of of the destination URL.
+		// Set the host of the request to the host of of the destination URL.
 		// See http://blog.semanticart.com/blog/2013/11/11/a-proper-api-proxy-written-in-go/.
 		req.Host = req.URL.Host
 	}
