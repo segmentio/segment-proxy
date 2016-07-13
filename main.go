@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	"flag"
 	"log"
 	"net/http"
-	"net/http/httptest"
 	"net/http/httputil"
 	"net/url"
 	"strings"
@@ -55,6 +53,8 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) *httputil.Revers
 	return &httputil.ReverseProxy{Director: director}
 }
 
+var port = flag.String("port", "8080", "bind address")
+
 func main() {
 	cdnURL, err := url.Parse("http://cdn.segment.com")
 	if err != nil {
@@ -65,19 +65,6 @@ func main() {
 		log.Fatal(err)
 	}
 	proxy := NewSegmentReverseProxy(cdnURL, trackingAPIURL)
-	proxyServer := httptest.NewServer(proxy)
-	defer proxyServer.Close()
 
-	// Test code.
-	url := proxyServer.URL + "/analytics.js/v1/DQf6nqU1PaMbcVQenYzYSRd6nkUL21b8/analytics.js"
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("%s", b)
+	log.Fatal(http.ListenAndServe(":"+*port, proxy))
 }
