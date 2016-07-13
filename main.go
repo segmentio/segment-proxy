@@ -32,7 +32,7 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) *httputil.Revers
 	director := func(req *http.Request) {
 		// Figure out which server to redirect to based on the incoming request.
 		var target *url.URL
-		if strings.HasPrefix(req.URL.String(), "/v1/projects") {
+		if strings.HasPrefix(req.URL.String(), "/v1/projects") || strings.HasPrefix(req.URL.String(), "/analytics.js/v1") {
 			target = cdn
 		} else {
 			target = trackingAPI
@@ -69,7 +69,7 @@ func main() {
 	defer proxyServer.Close()
 
 	// Test code.
-	url := proxyServer.URL + "/v1/import/DQf6nqU1PaMbcVQenYzYSRd6nkUL21b8/settings"
+	url := proxyServer.URL + "/analytics.js/v1/DQf6nqU1PaMbcVQenYzYSRd6nkUL21b8/analytics.js"
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
