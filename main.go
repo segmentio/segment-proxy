@@ -6,7 +6,10 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 	"strings"
+
+	"github.com/gorilla/handlers"
 )
 
 // singleJoiningSlash is copied from httputil.singleJoiningSlash method.
@@ -26,7 +29,7 @@ func singleJoiningSlash(a, b string) string {
 // method, modified to dynamically redirect to different servers (CDN or Tracking API)
 // based on the incoming request, and sets the host of the request to the host of of
 // the destination URL.
-func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) *httputil.ReverseProxy {
+func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) http.Handler {
 	director := func(req *http.Request) {
 		// Figure out which server to redirect to based on the incoming request.
 		var target *url.URL
@@ -54,8 +57,10 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) *httputil.Revers
 }
 
 var port = flag.String("port", "8080", "bind address")
+var debug = flag.Bool("debug", false, "debug mode")
 
 func main() {
+	flag.Parse()
 	cdnURL, err := url.Parse("http://cdn.segment.com")
 	if err != nil {
 		log.Fatal(err)
@@ -65,6 +70,9 @@ func main() {
 		log.Fatal(err)
 	}
 	proxy := NewSegmentReverseProxy(cdnURL, trackingAPIURL)
+	if *debug {
+		proxy = handlers.LoggingHandler(os.Stdout, proxy)
+	}
 
 	log.Fatal(http.ListenAndServe(":"+*port, proxy))
 }

@@ -1,8 +1,8 @@
 build:
-	go build -o bin/segment-proxy
+	godep go build -o bin/segment-proxy
 
 test:
-	go test -v -cover
+	godep go test -v -cover
 
 docker:
 	docker build -t segment-proxy .
