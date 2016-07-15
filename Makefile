@@ -1,5 +1,5 @@
 build:
-	go build -o bin/segment-proxy
+	gox -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 server:
 	go run main.go

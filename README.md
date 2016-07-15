@@ -26,9 +26,7 @@ Usage of proxy:
 
 ### Via prebuilt binaries.
 
-1. Run `wget https://github.com/segmentio/segment-proxy/releases/download/1.0.0/proxy`.
-2. Run `chmod +x proxy`.
-3. Run `./proxy`.
+Download the latest binaries from [Github](https://github.com/segmentio/segment-proxy/releases).
 
 ### Via Docker
 
