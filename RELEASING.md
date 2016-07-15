@@ -7,4 +7,5 @@
 5. Run `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version).
 6. Run `git push && git push --tags`.
 7. Run `make docker-push`.
-8. Run `github-release upload --user segmentio --repo segment-proxy --tag X.Y.Z --name "X.Y.Z" --file in/segment-proxy`.
+8. Run `github-release release --user segmentio --repo segment-proxy --tag X.Y.Z --name "X.Y.Z"`
+8. Run `github-release upload --user segmentio --repo segment-proxy --tag X.Y.Z --name "X.Y.Z" --file bin/segment-proxy`.
