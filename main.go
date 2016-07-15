@@ -72,6 +72,7 @@ func main() {
 	proxy := NewSegmentReverseProxy(cdnURL, trackingAPIURL)
 	if *debug {
 		proxy = handlers.LoggingHandler(os.Stdout, proxy)
+		log.Printf("serving proxy at port %v\n", *port)
 	}
 
 	log.Fatal(http.ListenAndServe(":"+*port, proxy))
