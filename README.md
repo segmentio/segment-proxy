@@ -30,4 +30,4 @@ Download the latest binaries from [Github](https://github.com/segmentio/segment-
 
 ### Via Docker
 
-1. Run `docker run segment/proxy`.
+1. Run `docker run --publish 8080:8080 segment/proxy`.
