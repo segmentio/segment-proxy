@@ -1,7 +1,8 @@
 package main
 
 import (
-	"encoding/json"
+    "encoding/json"
+    "log"
     "net/http"
     "net/http/httputil"
     "net/url"
@@ -26,5 +27,6 @@ func main() {
     http.Handle("/", httputil.NewSingleHostReverseProxy(u))
  
     // Start the server
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":80", nil)
+    log.Printf("Proxy Initialized")
 }
