@@ -1,0 +1,9 @@
+
+default:
+  GET_HOSTS_FROM: dns
+  PORT: 80
+
+testing:
+  DEBUG: true
+
+production:

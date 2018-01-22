@@ -1,0 +1,34 @@
+version: "3"
+services:
+  segment-proxy:
+    container_name: segment-proxy
+    ####################################################################
+    # Builds the current code in your repo
+    ####################################################################
+    build: .
+    environment:
+      - PORT=80
+    ####################################################################
+    # Maps port 80 from the container to 8080 on your host, this allows
+    # you to access your service via http://localhost:8080.  While we've
+    # provided this example here, it's intended as a tool for debugging
+    # purposes and not as a permanent bypass for the edge-gateway.
+    ####################################################################
+    ports:
+      - "8080:80"
+    ####################################################################
+    # Maps your current directory to the segment-proxy directory in the running
+    # docker container.  In theory this would allow for you to use a
+    # live-reload solution
+    ####################################################################
+    volumes:
+      - .:/go/src/github.com/InVisionApp/segment-proxy
+
+########################################################################
+# Instructs docker compose to use the invisionlocal_default network
+# as the default network for all services in this compose environment
+########################################################################
+networks:
+  default:
+    external:
+      name: invisionlocal_default
