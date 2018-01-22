@@ -1,0 +1,4 @@
+app:
+  build:
+    image: quay.io/invision/segment-proxy
+    dockerfile_path: Dockerfile
