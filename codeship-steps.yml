@@ -1,0 +1,28 @@
+- name: Registry
+  type: serial
+  service: app
+  encrypted_dockercfg_path: codeship-dockercfg.encrypted
+  steps:
+  - name: Push all builds to quay.io
+    type: serial
+    steps:
+    - name: Push Branch-CommitID tag # Used for testing deploys
+      type: push
+      registry: quay.io
+      image_name: quay.io/invision/segment-proxy
+      image_tag: "{{ .Branch }}-{{ .CommitID }}"
+    - name: Push Branch tag # Optional
+      type: push
+      registry: quay.io
+      image_name: quay.io/invision/segment-proxy
+      image_tag: "{{ .Branch }}"
+    - name: Push master-CommitID tag # Used for Staging deploys
+      type: push
+      registry: quay.io
+      image_name: quay.io/invision/segment-proxy
+      image_tag: "master-{{ .CommitID }}"
+    - name: Push release-CommitID tag # Used for Prod deploys
+      type: push
+      registry: quay.io
+      image_name: quay.io/invision/segment-proxy
+      image_tag: "release-{{ .CommitID }}"
