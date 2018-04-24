@@ -17,7 +17,7 @@ Usage of proxy:
 ### Via Source
 
 1. Clone the repo `git clone git@github.com:segmentio/segment-proxy.git`.
-2. Run `make build run`.
+2. Run `make build server`.
 
 ### Via Golang
 
