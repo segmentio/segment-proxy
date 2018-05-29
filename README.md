@@ -34,6 +34,6 @@ Download the latest binaries from [Github](https://github.com/segmentio/segment-
 
 # Library Instructions
 
-* [iOS[(https://segment.com/docs/sources/mobile/ios/#proxy-http-calls)
-* [Android[(https://segment.com/docs/sources/mobile/android/#proxy-http-calls)
-* [Analytics.js[(https://segment.com/docs/sources/website/analytics.js/#proxy)
+* [iOS](https://segment.com/docs/sources/mobile/ios/#proxy-http-calls)
+* [Android](https://segment.com/docs/sources/mobile/android/#proxy-http-calls)
+* [Analytics.js](https://segment.com/docs/sources/website/analytics.js/#proxy)
