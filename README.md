@@ -1,6 +1,6 @@
 # segment-proxy
 
-Proxies requests to the Segment CDN and Tracking API.
+Proxies requests to the Segment CDN and Tracking API. You can run this in your infrastructure (or use it as a reference implementation) and point your clients to use this proxy instead of `api.segment.io` or `cdn.segment.com` directly.
 
 # CLI
 
@@ -31,3 +31,9 @@ Download the latest binaries from [Github](https://github.com/segmentio/segment-
 ### Via Docker
 
 1. Run `docker run --publish 8080:8080 segment/proxy`.
+
+# Library Instructions
+
+* [iOS[(https://segment.com/docs/sources/mobile/ios/#proxy-http-calls)
+* [Android[(https://segment.com/docs/sources/mobile/android/#proxy-http-calls)
+* [Analytics.js[(https://segment.com/docs/sources/website/analytics.js/#proxy)
