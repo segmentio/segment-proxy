@@ -61,11 +61,11 @@ var debug = flag.Bool("debug", false, "debug mode")
 
 func main() {
 	flag.Parse()
-	cdnURL, err := url.Parse("http://cdn.segment.com")
+	cdnURL, err := url.Parse("https://cdn.segment.com")
 	if err != nil {
 		log.Fatal(err)
 	}
-	trackingAPIURL, err := url.Parse("http://api.segment.io")
+	trackingAPIURL, err := url.Parse("https://api.segment.io")
 	if err != nil {
 		log.Fatal(err)
 	}
