@@ -31,7 +31,7 @@ func TestSegmentReverseProxy(t *testing.T) {
 			if c.expectedServer == CDN {
 				fmt.Fprintln(w, "Hello, client")
 			} else {
-				t.Errorf("CDN unexpected request: %f\n", r.URL)
+				t.Errorf("CDN unexpected request: %v\n", r.URL)
 			}
 		}))
 
@@ -39,7 +39,7 @@ func TestSegmentReverseProxy(t *testing.T) {
 			if c.expectedServer == TrackingAPI {
 				fmt.Fprintln(w, "Hello, client")
 			} else {
-				t.Errorf("Tracking API unexpected request: %f\n", r.URL)
+				t.Errorf("Tracking API unexpected request: %v\n", r.URL)
 			}
 		}))
 
