@@ -1,5 +1,5 @@
 build:
-	gox -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
+	go build -o bin/segment-proxy
 
 server:
 	go run main.go
@@ -12,5 +12,8 @@ docker:
 
 docker-push:
 	docker push segment/proxy
+
+clean:
+	rm -rf bin/*
 
 .PHONY: build server test docker docker-push
