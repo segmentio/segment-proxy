@@ -22,6 +22,7 @@ func TestSegmentReverseProxy(t *testing.T) {
 		expectedServer SegmentServer
 	}{
 		{"/v1/projects", CDN},
+		{"/morse.js/v1", CDN},
 		{"/analytics.js/v1", CDN},
 		{"/v1/import", TrackingAPI},
 		{"/v1/pixel", TrackingAPI},
@@ -53,6 +54,10 @@ func TestSegmentReverseProxy(t *testing.T) {
 		cdn.Close()
 		trackingAPI.Close()
 	}
+}
+
+func TestHealthEndpoint(t *testing.T) {
+	
 }
 
 func mustParseUrl(raw string) *url.URL {

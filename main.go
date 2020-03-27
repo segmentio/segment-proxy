@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -31,10 +32,16 @@ func singleJoiningSlash(a, b string) string {
 // the destination URL.
 func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) http.Handler {
 	director := func(req *http.Request) {
-		// Figure out which server to redirect to based on the incoming request.
+		if req.URL.Path != "/health" {
+			log.Printf(req.URL.String())
+		}
+
+		// Figure out which server to redirect to based on the incoming request, and modify URL as if necessary
 		var target *url.URL
-		if strings.HasPrefix(req.URL.String(), "/v1/projects") || strings.HasPrefix(req.URL.String(), "/analytics.js/v1") {
+		var proxyPath = req.URL.Path
+		if strings.HasPrefix(req.URL.String(), "/v1/projects") || strings.HasPrefix(req.URL.String(), "/morse.js/v1") || strings.HasPrefix(req.URL.String(), "/analytics.js/v1") {
 			target = cdn
+			proxyPath = strings.Replace(req.URL.Path, "morse", "analytics", -1)
 		} else {
 			target = trackingAPI
 		}
@@ -42,7 +49,8 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) http.Handler {
 		targetQuery := target.RawQuery
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
-		req.URL.Path = singleJoiningSlash(target.Path, req.URL.Path)
+		req.URL.Path = singleJoiningSlash(target.Path, proxyPath)
+
 		if targetQuery == "" || req.URL.RawQuery == "" {
 			req.URL.RawQuery = targetQuery + req.URL.RawQuery
 		} else {
@@ -54,6 +62,10 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) http.Handler {
 		req.Host = req.URL.Host
 	}
 	return &httputil.ReverseProxy{Director: director}
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "healthy")
 }
 
 var port = flag.String("port", "8080", "bind address")
@@ -69,11 +81,20 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	proxy := NewSegmentReverseProxy(cdnURL, trackingAPIURL)
 	if *debug {
 		proxy = handlers.LoggingHandler(os.Stdout, proxy)
 		log.Printf("serving proxy at port %v\n", *port)
 	}
 
-	log.Fatal(http.ListenAndServe(":"+*port, proxy))
+	// Health check endpoint
+	http.HandleFunc("/health", handler)
+
+	// All other traffic goes through proxy
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		proxy.ServeHTTP(w, r)
+	})
+
+	log.Fatal(http.ListenAndServe(":"+*port, nil))
 }
