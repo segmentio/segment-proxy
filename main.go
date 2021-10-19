@@ -32,10 +32,20 @@ func singleJoiningSlash(a, b string) string {
 func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) http.Handler {
 	director := func(req *http.Request) {
 		// Figure out which server to redirect to based on the incoming request.
+		// https://segment-cdn.dayforward.com/analytics-next/bundles/130.bundle.9457873b007a93e16765.js
+		// https://segment-cdn.dayforward.com/analytics-next/bundles/ajs-destination.bundle.c473a3426ccbc3cdfba0.js
+		// https://prod-segment-cdn.dayforward.com/next-integrations/integrations/facebook-pixel/2.11.4/facebook-pixel.dynamic.js.gz
 		var target *url.URL
-		if strings.HasPrefix(req.URL.String(), "/v1/projects") || strings.HasPrefix(req.URL.String(), "/analytics.js/v1") {
+		switch {
+		case strings.HasPrefix(req.URL.String(), "/v1/projects"):
+			fallthrough
+		case strings.HasPrefix(req.URL.String(), "/analytics.js/v1"):
+			fallthrough
+		case strings.HasPrefix(req.URL.String(), "/next-integrations"):
+			fallthrough
+		case strings.HasPrefix(req.URL.String(), "/analytics-next/bundles"):
 			target = cdn
-		} else {
+		default:
 			target = trackingAPI
 		}
 
