@@ -33,9 +33,16 @@ func NewSegmentReverseProxy(cdn *url.URL, trackingAPI *url.URL) http.Handler {
 	director := func(req *http.Request) {
 		// Figure out which server to redirect to based on the incoming request.
 		var target *url.URL
-		if strings.HasPrefix(req.URL.String(), "/v1/projects") || strings.HasPrefix(req.URL.String(), "/analytics.js/v1") {
+		switch {
+		case strings.HasPrefix(req.URL.String(), "/v1/projects"):
+			fallthrough
+		case strings.HasPrefix(req.URL.String(), "/analytics.js/v1"):
+			fallthrough
+		case strings.HasPrefix(req.URL.String(), "/next-integrations"):
+			fallthrough
+		case strings.HasPrefix(req.URL.String(), "/analytics-next/bundles"):
 			target = cdn
-		} else {
+		default:
 			target = trackingAPI
 		}
 
